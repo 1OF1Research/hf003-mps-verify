@@ -12,11 +12,11 @@ window). The gift — the workaround patch plus this script — lives in
 the issue comment that offered it is
 [here](https://github.com/huggingface/transformers/issues/44247#issuecomment-6888083259).
 
-The gift's authors have no Apple Silicon. GitHub Actions `macos-14`
+The gift's authors have no Apple Silicon. GitHub Actions `macos-15`
 runners are Apple Silicon (M1), so this repo runs the check there, in
 the open:
 
-- `.github/workflows/verify.yml` runs on `macos-14` (workflow_dispatch
+- `.github/workflows/verify.yml` runs on `macos-15` (workflow_dispatch
   or push), installs the pinned stack `torch==2.8.0` +
   `transformers==5.23.0` on Python 3.12, first probes the hardware and
   `torch.backends.mps.is_available()`, then runs the script and saves
