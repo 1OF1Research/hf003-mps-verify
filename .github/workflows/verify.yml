@@ -1,0 +1,42 @@
+name: verify-mps-sdpa
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  verify:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Probe hardware
+        run: |
+          uname -a
+          uname -m
+          sysctl -n machdep.cpu.brand_string
+          system_profiler SPHardwareDataType | sed -n '1,15p'
+
+      - name: Install pinned stack
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch==2.8.0 transformers==5.23.0
+
+      - name: Probe MPS availability
+        run: python probe_mps.py
+
+      - name: Run verification script
+        run: |
+          set -o pipefail
+          python verify_mps_sdpa.py 2>&1 | tee verify-output.log
+
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-output
+          path: verify-output.log
