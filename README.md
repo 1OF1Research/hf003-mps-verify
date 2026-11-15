@@ -28,6 +28,9 @@ the open:
 
 What a healthy result looks like on an affected torch: Part A plain =
 **BUG REPRODUCED**, masked = **MATCHES reference**; Part B runs the
-transformers dispatch end-to-end on MPS.
+transformers dispatch end-to-end on MPS. The workflow then applies the
+gift's patch (`mps_sdpa_workaround.patch`, also byte-identical to the
+gist) to the installed transformers and runs the script a second time —
+Part B should then report the workaround present and MATCH.
 
 `RESULTS.md` records the measured outcome of the run.

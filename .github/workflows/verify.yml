@@ -40,3 +40,17 @@ jobs:
         with:
           name: verify-output
           path: verify-output.log
+
+      - name: Apply the gift patch to the installed transformers and re-run
+        run: |
+          set -o pipefail
+          PURELIB=$(python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])")
+          patch -p2 -d "$PURELIB" < mps_sdpa_workaround.patch
+          python verify_mps_sdpa.py 2>&1 | tee verify-output-patched.log
+
+      - name: Upload patched run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-output-patched
+          path: verify-output-patched.log
