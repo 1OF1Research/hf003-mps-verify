@@ -50,7 +50,7 @@ jobs:
       - name: Run the PR's unit tests from the branch checkout
         run: |
           git clone --depth 1 --branch fix-mps-sdpa-float-mask-workaround https://github.com/1OF1Research/transformers.git tf-pr
-          pip install pytest parameterized
+          pip install pytest pytest-xdist parameterized
           cd tf-pr
           PYTHONPATH=$PWD/src python -m pytest tests/integrations/test_sdpa_attention.py -v 2>&1 | tee ../pr-unit-tests.log
 
